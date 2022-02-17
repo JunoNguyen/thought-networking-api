@@ -1,7 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const reactionSchema = require('./Reaction');
 
-// Schema to create Student model
 const thoughtSchema = new Schema(
     {
         thoughtId: {
@@ -34,9 +33,8 @@ const thoughtSchema = new Schema(
 
 thoughtSchema
     .virtual('reactionCount')
-    // Getter
     .get(function () {
-        return `${this.reactions}`;
+        return `${this.reactions.maxlength}`;
     });
 
 const Thought = model('thought', thoughtSchema);
