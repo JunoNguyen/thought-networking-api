@@ -8,7 +8,6 @@ const reactionSchema = new Schema(
     },
     reactionBody: {
       type: String,
-      required: true,
       maxlength: 280,
     },
     createdAt: {

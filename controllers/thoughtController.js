@@ -15,7 +15,7 @@ module.exports = {
             .then((thought) =>
                 !thought
                     ? res.status(404).json({ message: 'No thought with that ID' })
-                    : res.json(course)
+                    : res.json(thought)
             )
             .catch((err) => res.status(500).json(err));
     },
@@ -37,9 +37,8 @@ module.exports = {
             .then((thought) =>
                 !thought
                     ? res.status(404).json({ message: 'No thought with that ID' })
-                    : Thought.reactions.deleteMany({ _id: { $in: thought.reactions } })
+                    : Thought.deleteMany({ _id: { $in: thought.reactions } }), res.json('Thoughts and their reactions were deleted!')
             )
-            .then(() => res.json({ message: 'Thoughts and their reactions deleted!' }))
             .catch((err) => res.status(500).json(err));
     },
     updateThought(req, res) {
@@ -71,7 +70,7 @@ module.exports = {
 
     },
     deleteReaction(req, res) {
-        Thought.findOneAndUpdate({ _id: params.thoughtId }, { $pull: { reactions: { reactionId: req.params.reactionId } } }, { new: true })
+        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $pull: { reactions: { reactionId: req.body.reactionId } } }, { new: true })
             .then(dbThoughtsData => {
                 if (!dbThoughtsData) {
                     res.status(404).json({ message: 'No thoughts with this particular ID!' });
